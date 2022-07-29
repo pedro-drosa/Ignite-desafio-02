@@ -20,7 +20,15 @@ function checksExistsUserAccount(request, response, next) {
 }
 
 function checksCreateTodosUserAvailability(request, response, next) {
-  // Complete aqui
+  const user = request.user;
+  const registeredTasks = user.todos.length;
+  const maximumTasksInTheFreePlan = 10;
+  if (!user.pro && registeredTasks >= maximumTasksInTheFreePlan) {
+    return response
+      .status(403)
+      .json({ error: "activate pro plan to save more tasks" });
+  }
+  next();
 }
 
 function checksTodoExists(request, response, next) {
